@@ -1,7 +1,7 @@
 #### **Process checks**
 
 1. ###### **ps** - snapshot of running processes
-
+```
 aishuser@aish-ubuntu-tws:~$ ps
     PID TTY          TIME CMD
    3510 pts/0    00:00:00 bash
@@ -13,10 +13,10 @@ aishuser@aish-ubuntu-tws:~$ ps
    3586 pts/0    00:00:00 pager
    3614 pts/0    00:00:00 top
    3656 pts/0    00:00:00 ps
-
+```
 
 2. ###### **top** - real time system stats
-
+```
 aishuser@aish-ubuntu-tws:~$ top
 top - 11:06:51 up  1:04,  1 user,  load average: 0.00, 0.00, 0.00
 Tasks: 126 total,   1 running, 119 sleeping,   6 stopped,   0 zombie
@@ -33,12 +33,12 @@ MiB Swap:      0.0 total,      0.0 free,      0.0 used.   3047.2 avail Mem
       3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_workque+
       4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-rc+
       5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-sy+
-
+```
 
 #### **Service checks**
 
 1. ###### **Systemctl** - check status of a service
-
+```
 aishuser@aish-ubuntu-tws:~$ systemctl status nginx
 ● nginx.service - A high performance web server and a reverse proxy server
      Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)
@@ -57,9 +57,9 @@ aishuser@aish-ubuntu-tws:~$ systemctl status nginx
 
 Mar 26 10:51:31 aish-ubuntu-tws systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
 Mar 26 10:51:31 aish-ubuntu-tws systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
-
+```
 2. ###### **systemctl list-units** - Lists all running services
-
+```
 aishuser@aish-ubuntu-tws:~$ systemctl list-units --type=service
   UNIT                                                  LOAD   ACTIVE SUB     DESCRIPTION
   apparmor.service                                      loaded active exited  Load AppArmor profiles
@@ -75,13 +75,12 @@ aishuser@aish-ubuntu-tws:~$ systemctl list-units --type=service
   dbus.service                                          loaded active running D-Bus System Message Bus
   finalrd.service                                       loaded active exited  Create final runtime dir for shutdown pivot root
   fwupd.service                                         loaded active running Firmware update daemon
-
-
+```
 
 #### **Log checks**
 
 1. ###### **journalctl** - view logs of service
-
+```
 aishuser@aish-ubuntu-tws:~$ sudo systemctl restart nginx
 aishuser@aish-ubuntu-tws:~$ journalctl -u nginx
 Mar 26 10:51:31 aish-ubuntu-tws systemd[1]: Starting nginx.service - A high performa>
@@ -91,10 +90,10 @@ Mar 26 11:12:41 aish-ubuntu-tws systemd[1]: nginx.service: Deactivated successfu
 Mar 26 11:12:41 aish-ubuntu-tws systemd[1]: Stopped nginx.service - A high performan>
 Mar 26 11:12:41 aish-ubuntu-tws systemd[1]: Starting nginx.service - A high performa>
 Mar 26 11:12:41 aish-ubuntu-tws systemd[1]: Started nginx.service - A high performan>
- 
+```
 
 2. ###### **tail** - Print  the  last  10 lines of each FILE to standard output. Monitor logs live
-
+```
 aishuser@aish-ubuntu-tws:~$ tail -f /var/log/syslog
 2026-03-26T11:07:38.516108+00:00 aish-ubuntu-tws systemd[1]: collect-logs.scope: Deactivated successfully.
 2026-03-26T11:07:38.521274+00:00 aish-ubuntu-tws python3[959]: 2026-03-26T11:07:38.521219Z INFO CollectLogsHandler ExtHandler Successfully uploaded logs.
@@ -106,10 +105,10 @@ aishuser@aish-ubuntu-tws:~$ tail -f /var/log/syslog
 2026-03-26T11:12:41.664944+00:00 aish-ubuntu-tws systemd[1]: Stopped nginx.service - A high performance web server and a reverse proxy server.
 2026-03-26T11:12:41.670407+00:00 aish-ubuntu-tws systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
 2026-03-26T11:12:41.687927+00:00 aish-ubuntu-tws systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
-
+```
 
 3. ##### **less** - View and scroll logs up and down and exit. Does not print on the terminal.
-
+```
 2026-03-25T11:29:57.692787+00:00 aish-ubuntu-tws systemd-fsck[151]: cloudimg-rootfs: clean, 79403/327680 files, 452329/655099 blocks
 2026-03-25T11:29:57.693851+00:00 aish-ubuntu-tws systemd-modules-load[149]: Inserted module 'msr'
 2026-03-25T11:29:57.693864+00:00 aish-ubuntu-tws systemd[1]: Mounted dev-hugepages.mount - Huge Pages File System.
@@ -118,7 +117,7 @@ aishuser@aish-ubuntu-tws:~$ tail -f /var/log/syslog
 2026-03-25T11:29:57.693879+00:00 aish-ubuntu-tws systemd[1]: Mounted sys-kernel-tracing.mount - Kernel Trace File System.
 2026-03-25T11:29:57.693884+00:00 aish-ubuntu-tws systemd[1]: Finished keyboard-setup.service - Set the console keyboard layout.
 2026-03-25T11:29:57.693889+00:00 aish-ubuntu-tws systemd[1]: Finished kmod-static-nodes.service - Create List of Static Device Nodes.
-
+```
 
 
 
