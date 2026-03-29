@@ -244,7 +244,7 @@ resource "aws\_s3\_bucket" "tf\_s3" {
 
 resource "aws\_instance" "tf\_ec2" {
 
-&#x20; ami          = "ami-0ec10929233384c7f"
+&#x20; ami          = "ami-0d76b909de1a0595d"
 
 &#x20; instance\_type = "t3.micro"
 
@@ -353,9 +353,9 @@ aws\_s3\_bucket.tf\_s3
 #### Task 6: Modify, Plan, and Destroy
 
 1. What do the \~, +, and - symbols mean?
-\~ -> means it will only update the resource
-+ -> resource will be added
-- -> Resource will be deleted
+ **\~** -> means it will only update the resource
+ **+** -> resource will be added
+ **-** -> Resource will be deleted
 2. Is this an in-place update or a destroy-and-recreate?
 
 \-> Updating tag in EC2 instance is and in-place upgrade, it only modifies the existing resource and does not delete and recreate it.
