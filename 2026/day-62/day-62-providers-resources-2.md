@@ -1,119 +1,63 @@
 #### Task 4: Add a Security Group and EC2 Instance
 
 ```
-
-\# Create security group inside the VPC
-
-resource "aws\_security\_group" "aish\_security\_group" {
-
-&#x20; name        = "tf\_sg"
-
-&#x20; description = "allow TLS inbound and outbound traffic"
-
-&#x20; vpc\_id      = aws\_vpc.aish\_vpc.id
-
-&#x20; tags = {
-
-&#x20;   Name = "TerraWeek-SG"
-
-&#x20; }
-
+# Create security group inside the VPC
+resource "aws_security_group" "aish_security_group" {
+  name        = "tf_sg"
+  description = "allow TLS inbound and outbound traffic"
+  vpc_id      = aws_vpc.aish_vpc.id
+  tags = {
+    Name = "TerraWeek-SG"
+  }
 }
 
-
-
-\# Create ingress rule
-
-resource "aws\_vpc\_security\_group\_ingress\_rule" "allow\_ssh" {
-
-&#x20; security\_group\_id = aws\_security\_group.aish\_security\_group.id
-
-&#x20; cidr\_ipv4         = "0.0.0.0/0"
-
-&#x20; from\_port         = 22
-
-&#x20; ip\_protocol       = "tcp"
-
-&#x20; to\_port           = 22
-
+# Create ingress rule
+resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
+  security_group_id = aws_security_group.aish_security_group.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 22
+  ip_protocol       = "tcp"
+  to_port           = 22
 }
 
-
-
-\# Create ingress rule
-
-resource "aws\_vpc\_security\_group\_ingress\_rule" "allow\_http" {
-
-&#x20; security\_group\_id = aws\_security\_group.aish\_security\_group.id
-
-&#x20; cidr\_ipv4         = "0.0.0.0/0"
-
-&#x20; from\_port         = 80
-
-&#x20; ip\_protocol       = "tcp"
-
-&#x20; to\_port           = 80
-
+# Create ingress rule
+resource "aws_vpc_security_group_ingress_rule" "allow_http" {
+  security_group_id = aws_security_group.aish_security_group.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
 }
 
-
-
-\# Create egress rule and allow all traffic
-
-resource "aws\_vpc\_security\_group\_egress\_rule" "allow\_all\_traffic" {
-
-&#x20; security\_group\_id = aws\_security\_group.aish\_security\_group.id
-
-&#x20; cidr\_ipv4         = "0.0.0.0/0"
-
-&#x20; ip\_protocol       = "-1"
-
+# Create egress rule and allow all traffic
+resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
+  security_group_id = aws_security_group.aish_security_group.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
 }
 
-
-
-\# Create key pair for ec2
-
-resource "aws\_key\_pair" "aish\_key" {
-
-&#x20; key\_name   = "tf\_ec2\_key"
-
-&#x20; public\_key = file("tf-instance-key.pub")
-
+# Create key pair for ec2
+resource "aws_key_pair" "aish_key" {
+  key_name   = "tf_ec2_key"
+  public_key = file("tf-instance-key.pub")
 }
+# Create ec2 instance with sg attached and public IP enabled
+resource "aws_instance" "aish_instance" {
+  ami                         = "ami-014d82945a82dfba3"
+  instance_type               = "t3.micro"
+  vpc_security_group_ids      = [aws_security_group.aish_security_group.id]
 
-\# Create ec2 instance with sg attached and public IP enabled
-
-resource "aws\_instance" "aish\_instance" {
-
-&#x20; ami                         = "ami-014d82945a82dfba3"
-
-&#x20; instance\_type               = "t3.micro"
-
-&#x20; vpc\_security\_group\_ids      = \[aws\_security\_group.aish\_security\_group.id]
-
-
-
-&#x20; associate\_public\_ip\_address = true
-
-&#x20; key\_name                    = aws\_key\_pair.aish\_key.key\_name
-
-&#x20; tags = {
-
-&#x20;   name = "TerraWeek-server"
-
-&#x20; }
-
+  associate_public_ip_address = true
+  key_name                    = aws_key_pair.aish_key.key_name
+  tags = {
+    name = "TerraWeek-server"
+  }
 }
 
 ```
-
-
-
 ###### Got **error** in apply
 
 ```
-
 aws\_instance.aish\_instance: Creating...
 
 ╷
@@ -129,104 +73,56 @@ aws\_instance.aish\_instance: Creating...
 │   89: resource "aws\_instance" "aish\_instance" {
 
 ```
-
-
-
 **Cause:** It is picking a subnet ID from different VPC
 
 **Resolution**: i mentioned subnet id as well using interpolation, which was missing.
 
-
-
 \-> Instance is created with public IP and i am able to SSH to it
 
 ```
-
-aishuser@aish-ubuntu-tws:\~/terraform-aws-infra$ ssh -i ../.ssh/id\_ed25519 ec2-user@44.248.252.245
-
+aishuser@aish-ubuntu-tws:~/terraform-aws-infra$ ssh -i ../.ssh/id_ed25519 ec2-user@44.248.252.245
 The authenticity of host '44.248.252.245 (44.248.252.245)' can't be established.
-
 ED25519 key fingerprint is SHA256:zz9iZg4/Fw6Akdx9T3zKngPanXoiCILSmpAjxZRAEYc.
-
 This key is not known by any other names.
-
-Are you sure you want to continue connecting (yes/no/\[fingerprint])? yes
-
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 Warning: Permanently added '44.248.252.245' (ED25519) to the list of known hosts.
-
-&#x20;  ,     #\_
-
-&#x20;  \~\\\_  ####\_        Amazon Linux 2023
-
-&#x20; \~\~  \\\_#####\\
-
-&#x20; \~\~     \\###|
-
-&#x20; \~\~       \\#/ \_\_\_   https://aws.amazon.com/linux/amazon-linux-2023
-
-&#x20;  \~\~       V\~' '->
-
-&#x20;   \~\~\~         /
-
-&#x20;     \~\~.\_.   \_/
-
-&#x20;        \_/ \_/
-
-&#x20;      \_/m/'
-
-\[ec2-user@ip-10-0-1-70 \~]$
-
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+[ec2-user@ip-10-0-1-70 ~]$
 ```
-
-
 
 #### Task 5: Explicit Dependencies with depends\_on
 
 Add S3 bucket
 
 ```
-
-\# create S3 bucket
-
-resource "aws\_s3\_bucket" "aish\_bucket" {
-
-&#x20; bucket     = "tf\_bucket"
-
-&#x20; depends\_on = \[aws\_instance.aish\_instance]
-
+# create S3 bucket
+resource "aws_s3_bucket" "aish_bucket" {
+  bucket     = "tf_bucket"
+  depends_on = [aws_instance.aish_instance]
 }
-
 ```
-
-
-
 terraform graph
 
-
-
 ```
-
-result uploaded as - \[day-62/terraform-graph.png]
-
+result uploaded as - [day-62/terraform-graph.png](https://github.com/Aish-DevOps-Org/90DaysOfDevOps/blob/master/2026/day-62/terraform-graph.png)
 ```
-
-
 
 ###### \-> When would you use depends\_on in real projects? Give two examples.
 
-
-
 You only need to explicitly specify a dependency when a resource or module relies on another resource's behavior but does not access any of that resource's data in its arguments.
-
-
 
 Like assigning a IAM policy to a resource like EC2 or AWS lambda before it performs certain action.
 
-
-
 #### Task 6: Lifecycle Rules and Destroy
-
-
 
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
 
@@ -234,17 +130,11 @@ Terraform used the selected providers to generate the following execution plan. 
 
 +/- **create replacement and then destroy**
 
-
-
 Terraform will perform the following actions:
-
-
 
 &#x20; # aws\_instance.aish\_instance must be replaced
 
 +/- resource "aws\_instance" "aish\_instance"
-
-
 
 \-> observe destroy order is reverse
 
@@ -306,23 +196,13 @@ aws\_vpc.aish\_vpc: Destruction complete after 1s
 
 ```
 
-
-
 VPC was deleted in the end.
-
-
 
 \-> What are the three lifecycle arguments (create\_before\_destroy, prevent\_destroy, ignore\_changes) and when would you use each?
 
-
-
 create\_before\_destroy -> Terraform normally destroys the old one first, then creates the new one. Setting create\_before\_destroy = true ensures the new resource is created and provisioned before the old one is destroyed. It ensures, continuous availability of that resource.
 
-
-
 prevent\_destroy -> Avoid accidental deletion
-
-
 
 ignore\_changes -> once a resource is created, and we want to avoid changes to its attributes by external sources, automation etc. then this list or all, will prevent any changes in that resource.
 
