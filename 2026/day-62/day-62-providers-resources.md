@@ -9,31 +9,18 @@
    * Define the provider "aws" block with your region
 
 ```
-
 terraform {
-
-&#x20; required\_providers {
-
-&#x20;   aws = {
-
-&#x20;     source  = "hashicorp/aws"
-
-&#x20;     version = "\~> 5.0"
-
-&#x20;   }
-
-&#x20; }
-
+    required_providers {
+        aws = {
+            source = "hashicorp/aws"
+            version = "~> 5.0"
+        }
+    }
 }
-
-
 
 provider "aws" {
-
-&#x20; region = "us-west-2"
-
+    region = "us-west-2"
 }
-
 ```
 
 3\. Run terraform init and check the output -- what version was installed? -> **5.100.0**
