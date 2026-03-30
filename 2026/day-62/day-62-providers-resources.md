@@ -60,44 +60,29 @@ Terraform has been successfully initialized!
 \-> The init created a **.terraform** directory and a **.terraform.lock.hcl** file
 
 ```
--> \*\*.terraform.lock.hcl\*\*
+-> **.terraform.lock.hcl**
 
 provider "registry.terraform.io/hashicorp/aws" {
+  version     = "5.100.0"
+  constraints = "~> 5.0"
+  hashes = []}
 
-&#x20; version     = "5.100.0"
-
-&#x20; constraints = "\~> 5.0"
-
-&#x20; hashes = \[]}
-
-
-
-\-> **.terraform directory**
+-> .terraform directory
 .terraform
-
 └── providers
-
-&#x20;   └── registry.terraform.io
-
-&#x20;       └── hashicorp
-
-&#x20;           └── aws
-
-&#x20;               └── 5.100.0
-
-&#x20;                   └── linux\_amd64
-
-&#x20;                       ├── LICENSE.txt
-
-&#x20;                       └── terraform-provider-aws\_v5.100.0\_x5
+    └── registry.terraform.io
+        └── hashicorp
+            └── aws
+                └── 5.100.0
+                    └── linux_amd64
+                        ├── LICENSE.txt
+                        └── terraform-provider-aws_v5.100.0_x5
 
 ```
 
 
 
 5\. Document: What does \~> 5.0 mean? How is it different from >= 5.0 and = 5.0.0?
-
-
 
 \~> is a pessimistic constraint operator
 
@@ -107,149 +92,73 @@ provider "registry.terraform.io/hashicorp/aws" {
 
 = 5.0.0 -> Only 5.0.0 version
 
-
-
 \---
 
 #### Task 2: Build a VPC from Scratch
 
 1. Create a main.tf
-
-
-
 ```
+# create VPC - CIDR block 10.0.0.0/16, tag it "TerraWeek-VPC"
+resource "aws_vpc" "aish_vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "TerraWeek-VPC"
+  }
+}
 
-\# create VPC - CIDR block 10.0.0.0/16, tag it "TerraWeek-VPC"
+# Create subnet - CIDR block 10.0.1.0/24, reference the VPC ID from step 1, enable public IP on launch, tag it "TerraWeek-Public-Subnet"
+resource "aws_subnet" "aish_subnet" {
+  cidr_block              = "10.0.1.0/24"
+  vpc_id                  = aws_vpc.aish_vpc.id
+  map_public_ip_on_launch = "true"
+  tags = {
+    Name = "TerraWeek-Public-Subnet"
+  }
+}
 
-resource "aws\_vpc" "aish\_vpc" {
+# Create internet gateway and attach to VPC
+resource "aws_internet_gateway" "aish_int_gateway" {
+  vpc_id = aws_vpc.aish_vpc.id
+  tags = {
+    Name = "TerraWeek-int-gateway"
+  }
+}
 
-&#x20; cidr\_block = "10.0.0.0/16"
-
-&#x20; tags = {
-
-&#x20;   Name = "TerraWeek-VPC"
-
-&#x20; }
+# Create a VPC route table - add a route for 0.0.0.0/0 pointing to the internet gateway
+resource "aws_route_table" "aish_route_table" {
+  vpc_id = aws_vpc.aish_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.aish_int_gateway.id
+  }
+  tags = {
+    Name = "TerraWeek-route-table"
+  }
 
 }
 
-
-
-\# Create subnet - CIDR block 10.0.1.0/24, reference the VPC ID from step 1, enable public IP on launch, tag it "TerraWeek-Public-Subnet"
-
-resource "aws\_subnet" "aish\_subnet" {
-
-&#x20; cidr\_block              = "10.0.1.0/24"
-
-&#x20; vpc\_id                  = aws\_vpc.aish\_vpc.id
-
-&#x20; map\_public\_ip\_on\_launch = "true"
-
-&#x20; tags = {
-
-&#x20;   Name = "TerraWeek-Public-Subnet"
-
-&#x20; }
+# Create route table association with subnet
+resource "aws_route_table_association" "aish_route_table_association" {
+  subnet_id      = aws_subnet.aish_subnet.id
+  route_table_id = aws_route_table.aish_route_table.id
 
 }
-
-
-
-\# Create internet gateway and attach to VPC
-
-resource "aws\_internet\_gateway" "aish\_int\_gateway" {
-
-&#x20; vpc\_id = aws\_vpc.aish\_vpc.id
-
-&#x20; tags = {
-
-&#x20;   Name = "TerraWeek-int-gateway"
-
-&#x20; }
-
-}
-
-
-
-\# Create a VPC route table - add a route for 0.0.0.0/0 pointing to the internet gateway
-
-resource "aws\_route\_table" "aish\_route\_table" {
-
-&#x20; vpc\_id = aws\_vpc.aish\_vpc.id
-
-&#x20; route {
-
-&#x20;   cidr\_block = "0.0.0.0/0"
-
-&#x20;   gateway\_id = aws\_internet\_gateway.aish\_int\_gateway.id
-
-&#x20; }
-
-&#x20; tags = {
-
-&#x20;   Name = "TerraWeek-route-table"
-
-&#x20; }
-
-
-
-}
-
-
-
-\# Create route table association with subnet
-
-resource "aws\_route\_table\_association" "aish\_route\_table\_association" {
-
-&#x20; subnet\_id      = aws\_subnet.aish\_subnet.id
-
-&#x20; route\_table\_id = aws\_route\_table.aish\_route\_table.id
-
-
-
-}
-
 ```
-
-
-
 2\. Terraform plan
 
-
-
 ```
-
 Plan: 5 to add, 0 to change, 0 to destroy.
-
-
-
 ```
-
-
-
 3\. Apply and check the AWS VPC console. Can you see all five resources connected?
-
-
-
 Yes, all 5 resources are connected.
-
-
-
 \---
 
-
-
 #### Task 3: Understand Implicit Dependencies
-
-
-
 **Implicit dependency:** 
 
 * helps terraform build a dependency graph and determine the correct order in which to create, update or destroy resources without manual intervention. 
 * It infers these dependencies through interpolation expressions eg. vpc\_id = aws\_vpc.aish\_vpc.id.
 * The resource being referenced (the dependency) is guaranteed to be created or modified before the resource that references it.
-
-
 
 **Question**:
 
@@ -260,8 +169,6 @@ If a implicit dependency is mentioned that, terraform will not create subnet bef
 If dependency is not mentioned, then subnet creation will fail as during subnet creation, it will look for vpc id which might not be available as the VPC is not created yet.
 
 3. Find all implicit dependencies in your config and list them-
-
-
 
 &#x09;Subnet -> VPC
 
