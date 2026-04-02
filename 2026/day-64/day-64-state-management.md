@@ -74,7 +74,7 @@ After updating it, the plan was successful.
 
 
 
-\-> After terraform apply I see the state is moved to S3 bucket check - \[backend.png]()
+\-> After terraform apply I see the state is moved to S3 bucket check - [backend.png](https://github.com/Aish-DevOps-Org/90DaysOfDevOps/blob/master/2026/day-64/backend.png)
 
 and local state looks like below
 
