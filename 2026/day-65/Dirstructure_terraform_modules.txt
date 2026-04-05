@@ -1,0 +1,141 @@
+aishuser@aish-ubuntu-tws:~/terraform-modules$ tree .terraform
+.terraform
+├── modules
+│   ├── modules.json
+│   └── vpc
+│       ├── CHANGELOG.md
+│       ├── LICENSE
+│       ├── README.md
+│       ├── docs
+│       │   ├── UPGRADE-3.0.md
+│       │   └── UPGRADE-4.0.md
+│       ├── examples
+│       │   ├── README.md
+│       │   ├── block-public-access
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── complete
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── flow-log
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── ipam
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── ipv6-dualstack
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── ipv6-only
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── issues
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── manage-default-vpc
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── network-acls
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── outpost
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── secondary-cidr-blocks
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   ├── separate-route-tables
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   └── simple
+│       │       ├── README.md
+│       │       ├── main.tf
+│       │       ├── outputs.tf
+│       │       ├── variables.tf
+│       │       └── versions.tf
+│       ├── main.tf
+│       ├── modules
+│       │   ├── flow-log
+│       │   │   ├── README.md
+│       │   │   ├── main.tf
+│       │   │   ├── outputs.tf
+│       │   │   ├── variables.tf
+│       │   │   └── versions.tf
+│       │   └── vpc-endpoints
+│       │       ├── README.md
+│       │       ├── main.tf
+│       │       ├── outputs.tf
+│       │       ├── variables.tf
+│       │       └── versions.tf
+│       ├── outputs.tf
+│       ├── variables.tf
+│       ├── versions.tf
+│       ├── vpc-flow-logs.tf
+│       └── wrappers
+│           ├── README.md
+│           ├── flow-log
+│           │   ├── README.md
+│           │   ├── main.tf
+│           │   ├── outputs.tf
+│           │   ├── variables.tf
+│           │   └── versions.tf
+│           ├── main.tf
+│           ├── outputs.tf
+│           ├── variables.tf
+│           ├── versions.tf
+│           └── vpc-endpoints
+│               ├── README.md
+│               ├── main.tf
+│               ├── outputs.tf
+│               ├── variables.tf
+│               └── versions.tf
+└── providers
+    └── registry.terraform.io
+        └── hashicorp
+            └── aws
+                ├── 5.100.0
+                │   └── linux_amd64
+                │       ├── LICENSE.txt
+                │       └── terraform-provider-aws_v5.100.0_x5
+                └── 6.39.0
+                    └── linux_amd64
+                        ├── LICENSE.txt
+                        └── terraform-provider-aws_v6.39.0_x5
+
+32 directories, 106 files
