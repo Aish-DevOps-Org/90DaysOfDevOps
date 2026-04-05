@@ -10,264 +10,135 @@ Child modules can themselves call other modules — forming a module tree.
 
 **ex.** Root Module
 
-&#x20;	└── calls ──> Child Module (vpc)
+	          └── calls ──> Child Module (vpc)
 
-&#x20;                   	  └── calls ──> Child Module (subnets)
+                  	          └── calls ──> Child Module (subnets)
 
 #### Task 2: Build a Custom EC2 Module
 
 ```
-
 main.tf
-
-\---
-
-resource "aws\_instance" "aish\_instance" {
-
-&#x20;   instance\_type = var.instance\_type
-
-&#x20;   associate\_public\_ip\_address = true
-
-&#x20;   ami = var.ami\_id
-
-&#x20;   subnet\_id = var.subnet\_id
-
-&#x20;   vpc\_security\_group\_ids = var.security\_group\_ids
-
-&#x20;   tags = var.tags
-
+---
+resource "aws_instance" "aish_instance" {
+    instance_type = var.instance_type
+    associate_public_ip_address = true
+    ami = var.ami_id
+    subnet_id = var.subnet_id
+    vpc_security_group_ids = var.security_group_ids
+    tags = var.tags
 }
-
-
 
 variables.tf
-
-\---
-
-variable "ami\_id" {
-
-&#x20;   type = "string"
-
+---
+variable "ami_id" {
+    type = string
 }
 
-
-
-variable "instance\_type" {
-
-&#x20;   type = "string"
-
-&#x20;   default = "t3.micro"
-
+variable "instance_type" {
+    type = string
+    default = "t3.micro"
 }
 
-
-
-variable "subnet\_id" {
-
-&#x20;   type = "string"
-
+variable "subnet_id" {
+    type = string
 }
 
-
-
-variable "security\_group\_ids" {
-
-&#x20;   type = "list(string)"
-
+variable "security_group_ids" {
+    type = list(string)
 }
-
-variable "instance\_name" {
-
-&#x20;   type = "string"
-
+variable "instance_name" {
+    type = string
 }
-
-
 
 variable "tags" {
-
-&#x20;   type = "map(string)"
-
-&#x20;   default = {}
-
+    type = map(string)
+    default = {}
 }
-
-
 
 output.tf
-
-\---
-
-output "instance\_id" {
-
-&#x20;   description = "ID of the e2"
-
-&#x20;   value = aws\_instance.aish\_instance.id
-
+---
+output "instance_id" {
+    description = "ID of the ec2"
+    value = aws_instance.aish_instance.id
 }
 
-
-
-output "public\_ip" {
-
-&#x20;   description = "public ip of the ec2"
-
-&#x20;   value = aws\_instance.aish\_instance.public\_ip
-
+output "public_ip" {
+    description = "public ip of the ec2"
+    value = aws_instance.aish_instance.public_ip
 }
 
-
-
-output "private\_ip" {
-
-&#x20;   description = "private ip oif the ec2"
-
-&#x20;   value = aws\_instance.aish\_instance.private\_ip
-
+output "private_ip" {
+    description = "private ip oif the ec2"
+    value = aws_instance.aish_instance.private_ip
 }
 
 ```
-
-
-
 #### Task 3: Build a Custom Security Group Module
 
 ```
-
 main.tf
-
-\---
-
-resource "aws\_security\_group" "aish\_security\_group" {
-
-&#x20;   name = var.sg\_name
-
-&#x20;   tags = var.tags
-
-&#x20;   vpc\_id = var.vpc\_id
-
-&#x20;   dynamic "ingress" {
-
-&#x20;       for\_each = var.ingress\_ports
-
-&#x20;       content {
-
-&#x20;           from\_port = ingress.value
-
-&#x20;           to\_port = ingress.value
-
-&#x20;           protocol = "tcp"
-
-&#x20;           cidr\_blocks = \["0.0.0.0/0"]
-
-&#x20;       }
-
-&#x20;   }
-
+---
+resource "aws_security_group" "aish_security_group" {
+    name = var.sg_name
+    tags = var.tags
+    vpc_id = var.vpc_id
+    dynamic "ingress" {
+        for_each = var.ingress_ports
+        content {
+            from_port = ingress.value
+            to_port = ingress.value
+            protocol = "tcp"
+            cidr_blocks = ["0.0.0.0/0"]
+        }
+    }
 }
 
-
-
-resource "aws\_vpc\_security\_group\_egress\_rule" "allow\_all\_traffic" {
-
-&#x20;   security\_group\_id = aws\_security\_group.aish\_security\_group.id
-
-&#x20;   cidr\_ipv4 = "0.0.0.0/0"
-
-&#x20;   ip\_protocol = "-1"
-
+resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
+    security_group_id = aws_security_group.aish_security_group.id
+    cidr_ipv4 = "0.0.0.0/0"
+    ip_protocol = "-1"
 }
-
-
 
 variables.tf
-
-\---
-
-variable "vpc\_id" {
-
-&#x20;   type = "string"
-
+---
+variable "vpc_id" {
+    type = string
 }
 
-
-
-variable "sg\_name" {
-
-&#x20;   type = "string"
-
+variable "sg_name" {
+    type = string
 }
 
-
-
-variable "ingress\_ports" {
-
-&#x20;   type = "list(numbers)"
-
-&#x20;   default = \[22, 80]
-
+variable "ingress_ports" {
+    type = list(number)
+    default = [22, 80]
 }
-
-
-
-
 
 variable "tags" {
-
-&#x20;   type = "map(strings)"
-
-&#x20;   default = {}
-
+    type = map(string)
+    default = {}
 }
-
-
 
 outputs.tf
-
-\---
-
-output "sg\_id" {
-
-&#x20;   description = "security group id"
-
-&#x20;   value = aws\_security\_group.aish\_security\_group.id
-
+---
+output "sg_id" {
+    description = "security group id"
+    value = aws_security_group.aish_security_group.id
 }
-
-
-
-#### Task 4: Call Your Modules from Root
-
-Uploaded all the files in the repo.   
-
-terraform plan and apply created 6 resources.
-
-
-
-#### Task 5: Use a Public Registry Module
-
-this creates 21 resources now
 
 ```
 
 Outputs:
-
-
-
+```
 api\_server\_ip = "34.217.64.152"
 
 web\_server\_ip = "44.255.121.171"
 
 ```
-
-\---------------------
-
-
-
+---------------------
 Module directory structure
 
 ```
-
 terraform-modules/
 
 ├── data.tf
@@ -299,8 +170,6 @@ terraform-modules/
 ├── providers.tf
 
 └── variables.tf
-
-
 
 4 directories, 12 files
 
@@ -357,9 +226,6 @@ module.web\_sg.aws\_security\_group.aish\_security\_group
 module.web\_sg.aws\_vpc\_security\_group\_egress\_rule.allow\_all\_traffic
 
 ```
-
-
-
 ###### Comparison: hand-written VPC vs registry VPC module (resources created)
 
 **Custom VPC module -** only created the VPC, subnet and the route table with associations we mentioned in our configuration.
@@ -374,8 +240,6 @@ Add VPN gateway with  enable\_vpn\_gateway = true
 
 So we do not need to write the whole config for all these resources, we just need to call the module and pass on the required values fort tjose resources.
 
-
-
 ###### Module best practices:
 
 1. Have a readme.md file to mention what the module does.
@@ -383,8 +247,5 @@ So we do not need to write the whole config for all these resources, we just nee
 3. keep it monolithic and focused and do nopt add multiple type of resources in one module.
 4. Define all the required variables while module creation, if it is missing in module and only mentioned during calling the module, it might not take an effect.
 5. Do not hardcode environment specific values. Use input variables and data sources effectively to make the module useful in multiple env.
-
-
-
-&#x20;                  
+                 
 
