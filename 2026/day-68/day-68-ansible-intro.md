@@ -19,12 +19,12 @@
 
 - Ansilble  does not have any agent running to manage the worker nodes. It connected with WN using SSH and the only prerequisite is to have pythion installed in each server as Ansible is based on python.
 
-4. Draw or describe the Ansible architecture: Check  [Ansible Architecture] ()
-    a. Control Node -- the machine where Ansible runs (your laptop or a jump server)
-    b. Managed Nodes -- the servers Ansible configures (your EC2 instances)
-    Inventory -- the list of managed nodes
-    c. Modules -- units of work Ansible executes (install a package, copy a file, start a service)
-    d. Playbooks -- YAML files that define what to do on which hosts
+4. Draw or describe the Ansible architecture: Check  [Ansible Architecture](https://github.com/Aish-DevOps-Org/90DaysOfDevOps/blob/master/2026/day-68/Ansible%20Architecture.png) \
+    a. Control Node -- the machine where Ansible runs (your laptop or a jump server) \
+    b. Managed Nodes -- the servers Ansible configures (your EC2 instances) \
+    Inventory -- the list of managed nodes  \
+    c. Modules -- units of work Ansible executes (install a package, copy a file, start a service) \
+    d. Playbooks -- YAML files that define what to do on which hosts 
 
 ## Task 2: Set Up Your Lab Environment
 
