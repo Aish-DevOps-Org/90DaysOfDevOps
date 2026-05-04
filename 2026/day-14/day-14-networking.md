@@ -6,20 +6,20 @@
 
 Where IP, TCP/UDP, HTTP/HTTPS, DNS sit in the stack
 
-OSI Model
-L7 - Application layer  -> UI - HTTP/HTTPS, DNS
-L6 - presentation layer -> Encryption
-L5 - session layer      -> Login
-L4 - transport layer    -> TCP/UDP
-L3 - Network layer      -> IP
-L2 - data link layer    -> MAC
+OSI Model \
+L7 - Application layer  -> UI - HTTP/HTTPS, DNS \
+L6 - presentation layer -> Encryption\
+L5 - session layer      -> Login\
+L4 - transport layer    -> TCP/UDP\
+L3 - Network layer      -> IP\
+L2 - data link layer    -> MAC\
 L1 - physical layer
 
-TCP/IP Model
-L4 - Application layer -> HTTP/HTTPS, DNS
-L3 - Transport layer   -> TCP/UDP
-L2 - Internet layer    -> IP/route
-L1 - Network access layer -> Cable/MAC
+TCP/IP Model\
+L4 - Application layer -> HTTP/HTTPS, DNS\
+L3 - Transport layer   -> TCP/UDP\
+L2 - Internet layer    -> IP/route\
+L1 - Network access layer -> Cable/MAC\
 
 One real example: “curl <https://example.com> = App layer over TCP over IP”
 
@@ -61,8 +61,8 @@ traceroute to www.google.com (142.251.152.119), 30 hops max, 60 byte packets
  5:  no reply
 ```
 
-**Ports**: ss -tulpn (or netstat -tulpn) — list one listening service and its port.
-ss -> Utility to investigate sockets
+**Ports**: ss -tulpn (or netstat -tulpn) — list one listening service and its port.\
+ss -> Utility to investigate sockets\
 t --tcp, u --udp, l --listening, p --processes, n --numeric
 
 netstat -> print network connections, routing tables, interface statistics, masquerade connections, and multicast memberships
