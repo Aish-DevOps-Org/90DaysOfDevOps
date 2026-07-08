@@ -63,6 +63,9 @@ call the function: check_memory
                total        used        free      shared  buff/cache   available
 Mem:           3.8Gi       808Mi       1.3Gi       4.0Mi       1.9Gi       3.0Gi
 Swap:             0B          0B          0B
+
+```
+
 ---
 
 ## Task 3: Strict Mode — `set -euo pipefail`
