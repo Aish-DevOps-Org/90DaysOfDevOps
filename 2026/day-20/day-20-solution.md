@@ -79,6 +79,7 @@ Instead of printing matching lines, grep prints the number of matching lines.
 
 -E = Extended Regular Expression (ERE)
 Lets you use regex operators like |, +, ?, () without escaping them.
+
 ---
 
 ## Task 3: Critical Events
@@ -121,9 +122,9 @@ Lines with critical events: 9:2026-07-11 15:39:49 [CRITICAL]  - 28310
 ```
 
 ***Note:***
-In grep -ni
--n = display the line number
--i = case insensitive
+In grep -ni \
+-n = display the line number \
+-i = case insensitive 
 
 ---
 
@@ -166,21 +167,23 @@ Getting lines with ERROR message
      19    Segmentation fault
      15    Disk full
 ```
-***Note:***
-grep → Find ERROR lines
-awk → Remove timestamp and ERROR tag
-sort → Group identical messages together
-uniq -c → Count occurrences of identical messages
-sort -rn → Highest count first
+
+***Note:*** \
+grep → Find ERROR lines \
+awk → Remove timestamp and ERROR tag \
+sort → Group identical messages together \
+uniq -c → Count occurrences of identical messages \
+sort -rn → Highest count first \
 head -5 → Show top 5
 
-**awk:**
-$1=$2=$3="" -> Set fields 1, 2, and 3 to empty strings.
--F' - ' -> Field separator, You can tell awk to split fields using a different character or string. 
-Example - 
-awk -F' - # split on (space-hyphen-space)
-awk -F: # split on :
-awk -F, # split on ,
+**awk:** \
+$1=$2=$3="" -> Set fields 1, 2, and 3 to empty strings. \
+-F' - ' -> Field separator, You can tell awk to split fields using a different character or string.  \
+Example -  \
+awk -F' - # split on (space-hyphen-space) \
+awk -F: # split on : \
+awk -F, # split on , 
+
 ---
 
 ## Task 5: Summary Report
