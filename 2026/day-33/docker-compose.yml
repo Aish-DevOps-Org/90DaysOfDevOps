@@ -1,0 +1,32 @@
+### Task 3: Two-Container Setup
+
+services:
+  MYSQL:
+    image: mysql:latest
+    container_name: db
+    environment:
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_DATABASE: my_db
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    ports:
+      - "3306:3306"
+    volumes:
+      - vol2:/var/lib/mysql
+
+  WordPress:
+    image: wordpress
+    container_name: wp
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: MYSQL
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: my_db
+
+volumes:
+  vol2:
+
+---
+
