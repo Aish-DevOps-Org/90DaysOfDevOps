@@ -1,0 +1,118 @@
+aishuser@aish-ubuntu-tws:~/mini-project$ docker-compose up -d
+Creating network "mini-project_default" with the default driver
+Creating volume "mini-project_dbvol" with default driver
+Pulling mysql (mysql:8.0)...
+8.0: Pulling from library/mysql
+edf85873f64e: Pull complete
+e3e5d1ac74c1: Pull complete
+0d74d296605b: Pull complete
+96d30d9fbee8: Pull complete
+297d04cfe470: Pull complete
+6ef6c7b50a93: Pull complete
+4c8a3e0d4e4b: Pull complete
+49ec2dab01d9: Pull complete
+ab24264a27e9: Pull complete
+a63160a5eda1: Pull complete
+7534d1db9f8d: Pull complete
+af166387641d: Download complete
+796812c73292: Download complete
+Digest: sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b
+Status: Downloaded newer image for mysql:8.0
+Pulling redis (redis:7-alpine)...
+7-alpine: Pulling from library/redis
+db197c512a33: Pull complete
+897d797d2723: Pull complete
+627d9d06d3d0: Pull complete
+f5a655897537: Pull complete
+93ebed1aef27: Pull complete
+4f4fb700ef54: Pull complete
+63e63047b377: Pull complete
+22b5e73fc01c: Download complete
+cac39341ecaa: Download complete
+Digest: sha256:e7723ff73d963f5cc6d9c4643ea3d989527a402a319239054e9472a7fb9219a2
+Status: Downloaded newer image for redis:7-alpine
+Building webapp
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  10.75kB
+Step 1/6 : FROM python:3.12-slim as builder
+3.12-slim: Pulling from library/python
+fd079632edc0: Pulling fs layer
+98db2485a0d0: Pulling fs layer
+48347b15c85f: Pulling fs layer
+fd079632edc0: Download complete
+98db2485a0d0: Download complete
+48347b15c85f: Download complete
+98db2485a0d0: Pull complete
+32d38934c913: Download complete
+87adcff9f8c4: Download complete
+48347b15c85f: Pull complete
+fd079632edc0: Pull complete
+Digest: sha256:57cd7c3a7a273101a6485ba99423ee568157882804b1124b4dd04266317710de
+Status: Downloaded newer image for python:3.12-slim
+ ---> 57cd7c3a7a27
+Step 2/6 : WORKDIR /app
+ ---> Running in 2726cb9aba11
+ ---> Removed intermediate container 2726cb9aba11
+ ---> 4826e8125397
+Step 3/6 : COPY . .
+ ---> 146fbd1cce06
+Step 4/6 : RUN pip install -r requirements.txt
+ ---> Running in 839ec91bd8a6
+Collecting Flask==3.0.3 (from -r requirements.txt (line 1))
+  Downloading flask-3.0.3-py3-none-any.whl.metadata (3.2 kB)
+Collecting PyMySQL==1.1.0 (from -r requirements.txt (line 2))
+  Downloading PyMySQL-1.1.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting redis==5.0.4 (from -r requirements.txt (line 3))
+  Downloading redis-5.0.4-py3-none-any.whl.metadata (9.3 kB)
+Collecting gunicorn==22.0.0 (from -r requirements.txt (line 4))
+  Downloading gunicorn-22.0.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting Werkzeug>=3.0.0 (from Flask==3.0.3->-r requirements.txt (line 1))
+  Downloading werkzeug-3.1.8-py3-none-any.whl.metadata (4.0 kB)
+Collecting Jinja2>=3.1.2 (from Flask==3.0.3->-r requirements.txt (line 1))
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting itsdangerous>=2.1.2 (from Flask==3.0.3->-r requirements.txt (line 1))
+  Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting click>=8.1.3 (from Flask==3.0.3->-r requirements.txt (line 1))
+  Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting blinker>=1.6.2 (from Flask==3.0.3->-r requirements.txt (line 1))
+  Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting packaging (from gunicorn==22.0.0->-r requirements.txt (line 4))
+  Downloading packaging-26.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting MarkupSafe>=2.0 (from Jinja2>=3.1.2->Flask==3.0.3->-r requirements.txt (line 1))
+  Downloading markupsafe-3.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+Downloading flask-3.0.3-py3-none-any.whl (101 kB)
+Downloading PyMySQL-1.1.0-py3-none-any.whl (44 kB)
+Downloading redis-5.0.4-py3-none-any.whl (251 kB)
+Downloading gunicorn-22.0.0-py3-none-any.whl (84 kB)
+Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Downloading click-8.4.2-py3-none-any.whl (119 kB)
+Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading werkzeug-3.1.8-py3-none-any.whl (226 kB)
+Downloading packaging-26.2-py3-none-any.whl (100 kB)
+Downloading markupsafe-3.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+Installing collected packages: redis, PyMySQL, packaging, MarkupSafe, itsdangerous, click, blinker, Werkzeug, Jinja2, gunicorn, Flask
+Successfully installed Flask-3.0.3 Jinja2-3.1.6 MarkupSafe-3.0.3 PyMySQL-1.1.0 Werkzeug-3.1.8 blinker-1.9.0 click-8.4.2 gunicorn-22.0.0 itsdangerous-2.2.0 packaging-26.2 redis-5.0.4
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container 839ec91bd8a6
+ ---> ef7ff30d42bf
+Step 5/6 : ENTRYPOINT ["python", "app.py"]
+ ---> Running in aaf0082aafae
+ ---> Removed intermediate container aaf0082aafae
+ ---> 7fe842ace1fd
+Step 6/6 : CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "3", "app:app"]
+ ---> Running in 34d51cdc503e
+ ---> Removed intermediate container 34d51cdc503e
+ ---> 47f93df621f0
+Successfully built 47f93df621f0
+Successfully tagged mini-project_webapp:latest
+WARNING: Image for service webapp was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating db     ... done
+Creating webapp ... done
+Creating redis  ... done
