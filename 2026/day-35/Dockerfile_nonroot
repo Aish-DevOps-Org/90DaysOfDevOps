@@ -1,0 +1,30 @@
+# Stage 1 - build the application
+# We dont need the non root user here because the builder stage never ships anywhere, so who runs it doesn't affect your final container's security at all.
+FROM maven:3.9-eclipse-temurin-17 as builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN mvn clean package
+
+# Stage 2 - run the application
+FROM eclipse-temurin:17-jre-alpine
+
+# Create a custom user with UID 1234 and GID 1234
+RUN addgroup -g 1234 appgroup && \
+    adduser -u 1234 -G appgroup -s /sbin/nologin -D appuser
+    
+# Set the workdir
+WORKDIR /app 
+
+# Copy the jar in, owned by appuser from the moment it lands —
+# avoids a separate chown layer.
+COPY --from=builder --chown=appuser:appgroup /app/target/*.jar app.jar
+
+USER appuser
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "app.jar"]
+
