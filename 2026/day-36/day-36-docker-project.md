@@ -35,7 +35,7 @@ Write a `docker-compose.yml` that includes:
 
 Run `docker compose up` and verify everything works together.
 
-[Dcoekrfile - multistage, with non root user and healthchek](Dockerfile)
+[Dcoekrfile - multistage, with non root user and healthchek](Dockerfile) \
 [docker compose file](docker-compose.yml)
 
 ---
@@ -49,9 +49,31 @@ Run `docker compose up` and verify everything works together.
    - How to run it with Docker Compose
    - Any environment variables needed
 
+![Image pushed to docker hub](Images/dockerhub.png)
+[Docker hub image link](https://hub.docker.com/repository/docker/codeedevops/myimages/tags)
+
 ---
 
 ### Task 5: Test the Whole Flow
 1. Remove all local images and containers
 2. Pull from Docker Hub and run using only your compose file
 3. Does it work fresh? If not — fix it until it does
+
+```bash
+aishuser@aish-ubuntu-tws:~/Login-System-with-Python-Flask-and-MySQL$ docker-compose up -d
+Creating network "login-system-with-python-flask-and-mysql_default" with the default driver
+Creating volume "login-system-with-python-flask-and-mysql_dbvol" with default driver
+Pulling webapp (codeedevops/myimages:flaskapp-v2)...
+flaskapp-v2: Pulling from codeedevops/myimages
+704b64e3eca2: Pull complete
+Digest: sha256:f42132a6a5130f6661662aed9be7d1d1eed6c7fef921a638c53e68e6498d76ef
+Status: Downloaded newer image for codeedevops/myimages:flaskapp-v2
+Creating db ... done
+Creating webapp ... done
+
+aishuser@aish-ubuntu-tws:~/Login-System-with-Python-Flask-and-MySQL$ docker ps
+CONTAINER ID   IMAGE                              COMMAND                  CREATED          STATUS                    PORTS                                                    NAMES
+da31902d8b4b   codeedevops/myimages:flaskapp-v2   "/bin/sh -c 'python …"   4 seconds ago    Up 3 seconds              0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp              webapp
+dc6e56216273   mysql:8.0                          "docker-entrypoint.s…"   35 seconds ago   Up 34 seconds (healthy)   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp   db
+```
+![Works with pulling docker hub image we created](Images/LoginPage.png)
