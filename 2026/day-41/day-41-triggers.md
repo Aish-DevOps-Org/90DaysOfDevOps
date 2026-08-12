@@ -25,6 +25,7 @@ jobs:
 ```
 
 **Verify:** Does it show up on the PR page?
+
 ![PR created](images/pr.png)
 ![Workflow check shows on PR](images/Workflowcheckonpr.png)
 
@@ -62,6 +63,9 @@ on:
   - cron: '6 18 * * 2' # Runs every Tuesday at 6:06 PM UTC
 
 ```
+
+![On schedule trigger](images/schedule.png)
+
 ---
 
 ### Task 3: Manual Trigger
