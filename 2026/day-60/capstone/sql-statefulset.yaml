@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sql-set
+spec:
+  serviceName: "mysql-service"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sql-app
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: sql-app
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+              name: sql
+          volumeMounts:
+          - name: sqlvol          # The 'name' here must match the 'metadata.name' in volumeClaimTemplates below
+            mountPath: /var/lib/mysql
+          # Injecting all keys from the Secret as environment variables
+          envFrom:
+          - secretRef:
+              name: mysql-secret
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+# This is the blueprint for creating PVCs dynamically per pod replica
+  volumeClaimTemplates:
+  - metadata:
+      name: sqlvol
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
+      resources:
+        requests:
+          storage: 1Gi
